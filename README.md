@@ -36,6 +36,8 @@ Refresh the bashrc
 source ~/.bashrc
 ```
 
+### Virtual environment setup
+
 Create and activate a new python virtual environment
 
 ```{bash}
@@ -43,6 +45,12 @@ conda create --name venv python=3.12.0
 ```
 ```{bash}
 conda activate venv
+```
+
+Install DSSP
+
+```{bash}
+conda install -c salilab dssp
 ```
 
 ### Installing Dependencies
