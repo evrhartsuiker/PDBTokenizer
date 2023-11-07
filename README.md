@@ -13,8 +13,14 @@ These four commands quickly and quietly install the latest 64-bit version of the
 
 ```{bash}
 mkdir -p ~/miniconda3
+```
+```{bash}
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+```
+```{bash}
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+```
+```{bash}
 rm -rf ~/miniconda3/miniconda.sh
 ```
 
@@ -22,6 +28,8 @@ After installing, initialize your newly-installed Miniconda. The following comma
 
 ```{bash}
 ~/miniconda3/bin/conda init bash
+```
+```{bash}
 ~/miniconda3/bin/conda init zsh
 ```
 
@@ -35,6 +43,8 @@ Create and activate a new python virtual environment
 
 ```{bash}
 conda create --name venv python=3.12.0
+```
+```{bash}
 conda activate venv
 ```
 
