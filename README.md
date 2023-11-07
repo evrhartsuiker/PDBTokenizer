@@ -8,10 +8,13 @@ This repository contains the module pdb_tokenizer.py. A python script intented t
 ## Deployment
 Follow the installation guide.
 
-### Workspace
+### Step 1: Setting up your workspace
 Either [clone][clone] or [download][download] the repository
 
-### Conda Setup
+### Step 2: Installing Python
+This module was developed in the language Python (version 3.12.0). Please follow the instructions on how to install Python [here][python].
+
+### Step 3: Conda Setup
 These four commands quickly and quietly install the latest 64-bit version of the installer and then clean up after themselves. To install a different version or architecture of Miniconda for Linux, change the name of the .sh installer in the wget command.
 
 ```{bash}
@@ -49,7 +52,7 @@ $ conda create --name venv python=3.12.0
 $ conda activate venv
 ```
 
-### Installing Dependencies
+### Step 4: Installing Dependencies
 
 If all has gone corretly you should see a (venv) in front of you prompt. If not repeat the last steps.
 
@@ -69,7 +72,7 @@ Install the dependencies using the supplied requirements file. See the file [req
 $ pip install -r dependencies requirements.txt
 ```
 
-## Usage
+## Running the module
 To use this program, move the pdb files you want tokenized to the [data/input](data/input) folder.
 
 Next adjust the parameters in the [config file](config/config.yaml)
@@ -90,6 +93,3 @@ $ python pdb_tokenizer_test.py
 [clone]: https://github.com/evrhartsuiker/pdb_parser_for_ml.git
 [download]: https://github.com/evrhartsuiker/pdb_parser_for_ml/src/master/
 [python]: https://www.python.org/
-[biopython]: https://biopython.org/
-[numpy]: https://numpy.org/
-[pyyaml]: https://pypi.org/project/PyYAML/
