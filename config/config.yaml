@@ -1,0 +1,9 @@
+n_cores: False # False for max cpu cores
+
+input_dir: data/input # Relative location within the repository
+
+min_fragment_len: 5
+max_fragment_len: 10
+
+source_language: amino_acid_pairs
+target_language: dihedral_angle_pairs
