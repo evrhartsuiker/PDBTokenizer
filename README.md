@@ -11,7 +11,7 @@ Follow the installation guide.
 ### Conda Setup
 These four commands quickly and quietly install the latest 64-bit version of the installer and then clean up after themselves. To install a different version or architecture of Miniconda for Linux, change the name of the .sh installer in the wget command.
 
-```console
+```{bash}
 mkdir -p ~/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
@@ -20,20 +20,20 @@ rm -rf ~/miniconda3/miniconda.sh
 
 After installing, initialize your newly-installed Miniconda. The following commands initialize for bash and zsh shells:
 
-```console
+```{bash}
 ~/miniconda3/bin/conda init bash
 ~/miniconda3/bin/conda init zsh
 ```
 
 Refresh the bashrc
 
-```console
+```{bash}
 source ~/.bashrc
 ```
 
 Create and activate a new python virtual environment
 
-```console
+```{bash}
 conda create --name venv python=3.12.0
 conda activate venv
 ```
@@ -44,7 +44,7 @@ If all has gone corretly you should see a (venv) in front of you prompt. If not 
 
 Install the dependencies using the supplied requirements file. See the file dependencies/requirements.txt for package and version details.
 
-```console
+```{bash}
 pip install -r dependencies requirements.txt
 ```
 
