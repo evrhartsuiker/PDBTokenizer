@@ -177,7 +177,7 @@ class PDBTokenizer():
 
     def write_lines(self, lines: list, path: Path):
         """Writes all elements of a list to a file"""
-        with open(path, 'w', newline='\n') as outfile:
+        with open(path, 'w+', newline='\n') as outfile:
             outfile.writelines(lines)
 
     def tokenize_pdb(self, pdb: Path):
@@ -207,8 +207,8 @@ class PDBTokenizer():
 
             random.shuffle(self.split_lines[datatype])
 
-            with open(amino_acid_path, 'w') as amino_acidfile:
-                with open(angles_path, 'w') as anglesfile:
+            with open(amino_acid_path, 'w+') as amino_acidfile:
+                with open(angles_path, 'w+') as anglesfile:
                     for line in self.split_lines[datatype]:
                         amino_acid_pairs, internal_angles = line.strip().split(',')
                         amino_acidfile.write(amino_acid_pairs + '\n')
