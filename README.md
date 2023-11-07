@@ -47,15 +47,15 @@ conda create --name venv python=3.12.0
 conda activate venv
 ```
 
-Install DSSP
+### Installing Dependencies
+
+If all has gone corretly you should see a (venv) in front of you prompt. If not repeat the last steps.
+
+Install DSSP using conda
 
 ```{bash}
 conda install -c salilab dssp
 ```
-
-### Installing Dependencies
-
-If all has gone corretly you should see a (venv) in front of you prompt. If not repeat the last steps.
 
 Install the dependencies using the supplied requirements file. See the file dependencies/requirements.txt for package and version details.
 
