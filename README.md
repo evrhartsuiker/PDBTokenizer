@@ -6,13 +6,9 @@ Created by Ruben Hartsuiker, Hanze University of Applied Sciences
 This repository contains the module pdb_tokenizer.py. A python script intented to process pdb files into a tokenized representation to be used for machine learning. The polypeptide of the PDB is parsed into sentences with amino acids pairs as words. The dihedral angles (phi- and psi- angles) are also parsed into sentences. Creating a new language that a transformer encoder decoder based translator can be trained on. 
 
 ## Deployment
-Follow the installation guide that matches your OS.
+Follow the installation guide.
 
-[Linux](#Linux)
-[MacOS](#MacOS)
-[Windows](#Windows)
-
-### Linux
+### Conda Setup
 These four commands quickly and quietly install the latest 64-bit version of the installer and then clean up after themselves. To install a different version or architecture of Miniconda for Linux, change the name of the .sh installer in the wget command.
 
 ```console
@@ -29,33 +25,28 @@ After installing, initialize your newly-installed Miniconda. The following comma
 ~/miniconda3/bin/conda init zsh
 ```
 
-### MacOS
-These four commands quickly and quietly install the latest M1 macOS version of the installer and then clean up after themselves. To install a different version or architecture of Miniconda for macOS, change the name of the .sh installer in the curl command.
+Refresh the bashrc
 
 ```console
-mkdir -p ~/miniconda3
-curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
-bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-rm -rf ~/miniconda3/miniconda.sh
+source ~/.bashrc
 ```
 
-After installing, initialize your newly-installed Miniconda. The following commands initialize for bash and zsh shells:
+Create and activate a new python virtual environment
 
 ```console
-~/miniconda3/bin/conda init bash
-~/miniconda3/bin/conda init zsh
+conda create --name venv python=3.12.0
+conda activate venv
 ```
 
-### Windows
-These three commands quickly and quietly install the latest 64-bit version of the installer and then clean up after themselves. To install a different version or architecture of Miniconda for Windows, change the name of the .exe installer in the curl command.
+### Installing Dependencies
+
+If all has gone corretly you should see a (venv) in front of you prompt. If not repeat the last steps.
+
+Install the dependencies using the supplied requirements file. See the file dependencies/requirements.txt for package and version details.
 
 ```console
-curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe -o miniconda.exe
-start /wait "" miniconda.exe /S
-del miniconda.exe
+pip install -r dependencies requirements.txt
 ```
-
-After installing, open the “Anaconda Prompt (miniconda3)” program to use Miniconda3. For the Powershell version, use “Anaconda Powershell Prompt (miniconda3)”.
 
 
 
