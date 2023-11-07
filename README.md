@@ -9,8 +9,7 @@ This repository contains the module pdb_tokenizer.py. A python script intented t
 Follow the installation guide.
 
 ### Workspace
-
-Either clone or download the repository
+Either [clone][clone] or [download][download] the repository
 
 ### Conda Setup
 These four commands quickly and quietly install the latest 64-bit version of the installer and then clean up after themselves. To install a different version or architecture of Miniconda for Linux, change the name of the .sh installer in the wget command.
@@ -41,7 +40,6 @@ $ source ~/.bashrc
 ```
 
 ### Virtual environment setup
-
 Create and activate a new python virtual environment
 
 ```{bash}
@@ -65,22 +63,29 @@ Install DSSP using conda
 $ conda install -c salilab dssp
 ```
 
-Install the dependencies using the supplied requirements file. See the file dependencies/requirements.txt for package and version details.
+Install the dependencies using the supplied requirements file. See the file [requirements.txt](dependencies/requirements.txt) for package and version details.
 
 ```{bash}
 $ pip install -r dependencies requirements.txt
 ```
 
 ## Usage
+To use this program, move the pdb files you want tokenized to the [data/input](data/input) folder.
 
+Next adjust the parameters in the [config file](config/config.yaml)
 
+Run the module:
 
+```{bash}
+$ python pdb_tokenizer.py
+```
 
+## Testing
+If the module is not working it might have broken down thanks to updates in the dependencies. To test if the code is still functional run the supplied test script:
 
-
-
-
-
+```{bash}
+$ python pdb_tokenizer_test.py
+```
 
 [clone]: https://github.com/evrhartsuiker/pdb_parser_for_ml.git
 [download]: https://github.com/evrhartsuiker/pdb_parser_for_ml/src/master/
@@ -88,5 +93,3 @@ $ pip install -r dependencies requirements.txt
 [biopython]: https://biopython.org/
 [numpy]: https://numpy.org/
 [pyyaml]: https://pypi.org/project/PyYAML/
-
-
