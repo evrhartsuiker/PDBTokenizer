@@ -90,6 +90,9 @@ If the module is not working it might have broken down thanks to updates in the 
 $ python pdb_tokenizer_test.py
 ```
 
+## Contact
+If any issue or question remains, don't hesitate to get in touch with us at [r.hartsuiker@st.hanze.nl](mailto:r.hartsuiker@st.hanze.nl)
+
 [clone]: https://github.com/evrhartsuiker/pdb_parser_for_ml.git
 [download]: https://github.com/evrhartsuiker/pdb_parser_for_ml/src/master/
 [python]: https://www.python.org/
