@@ -8,9 +8,9 @@ This repository contains the module pdb_tokenizer.py. A python script intented t
 ## Deployment
 Follow the installation guide that matches your OS.
 
-[Linux](###Linux)
-[MacOS](###MacOS)
-[Windows](###Windows)
+[Linux](#Linux)
+[MacOS](#MacOS)
+[Windows](#Windows)
 
 ### Linux
 These four commands quickly and quietly install the latest 64-bit version of the installer and then clean up after themselves. To install a different version or architecture of Miniconda for Linux, change the name of the .sh installer in the wget command.
