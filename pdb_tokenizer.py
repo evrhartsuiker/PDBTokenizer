@@ -188,16 +188,14 @@ class PDBTokenizer():
 
         tokenfile = Path.joinpath(Path.cwd() / 'data/output/tokens' / f'{self.min_len}_{self.max_len}_{pdb.stem}.csv')
 
-        if not Path.exists(tokenfile):
-            fragments = self.yield_fragments(residues)
-            parsed_fragments = self.get_parsed_fragments(fragments)
-            self.write_lines(parsed_fragments, tokenfile)
+        fragments = self.yield_fragments(residues)
+        parsed_fragments = self.get_parsed_fragments(fragments)
+        self.write_lines(parsed_fragments, tokenfile)
 
         evalfile = Path.joinpath(Path.cwd() / 'data/output/eval' / f'{pdb.stem}.csv')
 
-        if not Path.exists(evalfile):
-            parsed_eval = self.get_parsed_fragments([residues])
-            self.write_lines(parsed_eval, evalfile)
+        parsed_eval = self.get_parsed_fragments([residues])
+        self.write_lines(parsed_eval, evalfile)
 
     def write_splitted_lines(self, source_language: str, target_language: str):
         """Writes the stored output of split_file to training/validation files"""
