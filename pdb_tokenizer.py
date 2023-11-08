@@ -6,10 +6,11 @@ import multiprocessing
 import random
 import sys
 import warnings
-import yaml
 
 from pathlib import Path
 from typing import List, Generator
+
+import yaml
 
 from Bio.PDB import DSSP
 from Bio.PDB.MMCIFParser import MMCIFParser
@@ -25,20 +26,21 @@ class Cipher():
         decrypt_map: dictionary with encryption as keys and original as values
     """
     def __init__(self,
-                 keys: List[str] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '],
-                 values: List[str] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']):
+                 keys: str = '0123456789 ',
+                 values: str = 'ABCDEFGHIJK'):
         """Inits Cipher
 
         Attributes (optional):
-            keys: iterable with items for original representation
-            values: iterable with items for encrypted representation
+            keys: String with items for original representation
+            values: String with items for encrypted representation
         """
         try:
             assert len(keys) == len(values)
-            self.encrypt_map = {k: v for k, v in zip(keys, values)}
-            self.decrypt_map = {v: k for k, v in zip(keys, values)}
+            self.encrypt_map = dict(zip(list(keys), list(values)))
+            self.decrypt_map = dict(zip(list(values), list(keys)))
         except AssertionError:
-            raise IndexError(f'Length keys {len(keys)} is not equal to length values {len(values)}')
+            error_msg = f'Length keys {len(keys)} is not equal to length values {len(values)}'
+            raise IndexError(error_msg) from AssertionError
 
     def encrypt(self, original):
         """Encrypts elements using the encrypt map, if element is not present in map it is skipped
@@ -97,7 +99,8 @@ class PDBTokenizer():
             self.min_len = min_len
             self.max_len = max_len
         except AssertionError:
-            raise TypeError(f'min_len: {min_len} must be smaller than max_len: {max_len}')
+            error_msg = f'min_len: {min_len} must be smaller than max_len: {max_len}'
+            raise TypeError(error_msg) from AssertionError
 
         self.cipher = cipher
 
@@ -147,25 +150,29 @@ class PDBTokenizer():
     def encrypt_angles(self, angles: int):
         """Transforms the phi- or psi-angle of a residue in a letter representation"""
         for angle in angles:
-            angle_split = [v for v in str(angle)]
+            angle_split = list(str(angle))
             while len(angle_split) < 3:
                 angle_split = [' '] + angle_split
             yield self.cipher.encrypt(angle_split)
 
     def get_parsed_fragments(self, fragments: Generator):
-        """Parses the lists of DSSP tuple residues to amino acid/angle pairs in string representation"""
+        """Parses the lists of DSSP tuple residues to amino acid/angle pairs in
+        string representation
+        """
         parsed_fragments = []
 
-        for fragment in fragments:
+        for frag in fragments:
             # for all residue tuples except the last
             # gets the 1 letter amino acid from the current and next residue tuples
             # joins them in a string seperated by a space
             # the end product can be seen as a sentence in which the aa pairs are words
-            amino_acid_pairs = ' '.join(['{} {}'.format(fragment[i][self.amino_acid_index], fragment[i+1][self.amino_acid_index]) for i in range(len(fragment) - 1)])
+            amino_acid_pairs = ' '.join([f'{frag[i][self.amino_acid_index]}' \
+                                         f'{frag[i+1][self.amino_acid_index]}'
+                                          for i in range(len(frag) - 1)])
 
             # +180 to get rid of negative values
-            psi_angles = [round(fragment[i][self.psi_index]) + 180 for i in range(len(fragment) - 1)]
-            phi_angles = [round(fragment[i+1][self.phi_index]) + 180 for i in range(len(fragment) - 1)]
+            psi_angles = [round(frag[i][self.psi_index]) + 180 for i in range(len(frag) - 1)]
+            phi_angles = [round(frag[i+1][self.phi_index]) + 180 for i in range(len(frag) - 1)]
 
             psi_words = self.encrypt_angles(psi_angles)
             phi_words = self.encrypt_angles(phi_angles)
@@ -177,7 +184,7 @@ class PDBTokenizer():
 
     def write_lines(self, lines: list, path: Path):
         """Writes all elements of a list to a file"""
-        with open(path, 'w+', newline='\n') as outfile:
+        with open(path, 'w+', newline='\n', encoding='utf-8') as outfile:
             outfile.writelines(lines)
 
     def tokenize_pdb(self, pdb: Path):
@@ -186,7 +193,8 @@ class PDBTokenizer():
         """
         residues = self.get_residues(pdb)
 
-        tokenfile = Path.joinpath(Path.cwd() / 'data/output/tokens' / f'{self.min_len}_{self.max_len}_{pdb.stem}.csv')
+        tokenfile = Path.joinpath(Path.cwd() / 'data/output/tokens' /
+                                  f'{self.min_len}_{self.max_len}_{pdb.stem}.csv')
 
         fragments = self.yield_fragments(residues)
         parsed_fragments = self.get_parsed_fragments(fragments)
@@ -199,15 +207,17 @@ class PDBTokenizer():
 
     def write_splitted_lines(self, source_language: str, target_language: str):
         """Writes the stored output of split_file to training/validation files"""
-        for datatype in self.split_lines.keys():
-            amino_acid_path = Path.joinpath(Path.cwd() / 'data/output' / datatype / f'{self.min_len}_{self.max_len}_{source_language}.txt')
-            angles_path = Path.joinpath(Path.cwd() / 'data/output' / datatype / f'{self.min_len}_{self.max_len}_{target_language}.txt')
+        for datatype, split_lines in self.split_lines.items():
+            amino_acid_path = Path.joinpath(Path.cwd() / 'data/output' / datatype /
+                                            f'{self.min_len}_{self.max_len}_{source_language}.txt')
+            angles_path = Path.joinpath(Path.cwd() / 'data/output' / datatype /
+                                        f'{self.min_len}_{self.max_len}_{target_language}.txt')
 
-            random.shuffle(self.split_lines[datatype])
+            random.shuffle(split_lines)
 
-            with open(amino_acid_path, 'w+') as amino_acidfile:
-                with open(angles_path, 'w+') as anglesfile:
-                    for line in self.split_lines[datatype]:
+            with open(amino_acid_path, 'w+', encoding='utf-8') as amino_acidfile:
+                with open(angles_path, 'w+', encoding='utf-8') as anglesfile:
+                    for line in split_lines:
                         amino_acid_pairs, internal_angles = line.strip().split(',')
                         amino_acidfile.write(amino_acid_pairs + '\n')
                         anglesfile.write(internal_angles + '\n')
@@ -229,17 +239,20 @@ class PDBTokenizer():
         """Calls tokenize_pdb() with multiprocessing, uses all pdb files with MMCIF format"""
         pdb_paths = Path.joinpath(Path.cwd() / input_dir).rglob('*.cif')
         try:
-            pool = multiprocessing.Pool(n_cores if n_cores else multiprocessing.cpu_count())
-            pool.map(self.tokenize_pdb, pdb_paths)
+            n_cores = n_cores if n_cores else multiprocessing.cpu_count()
+            with multiprocessing.Pool(n_cores) as pool:
+                pool.map(self.tokenize_pdb, pdb_paths)
         finally:
             pool.close()
             pool.join()
 
     def prepare_train_valid(self, source_language: str, target_language: str):
-        """Collects and reads all pdb token files, stores all the output of split_file() in a dictionary
-        calls write_splitted_lines() which writes the combined tokes the train/valid files
+        """Collects and reads all pdb token files, stores all the output of split_file() in a
+        dictionary calls write_splitted_lines() which writes the combined tokes the
+        train/valid files
         """
-        tokenized_pdb_paths = Path.joinpath(Path.cwd() / 'data/output/tokens').rglob(f'{self.min_len}_{self.max_len}_*.csv')
+        tokenized_pdb_paths = Path.joinpath(Path.cwd() / 'data/output/tokens').rglob(
+            f'{self.min_len}_{self.max_len}_*.csv')
 
         for tokenized_pdb in tokenized_pdb_paths:
             self.split_file(tokenized_pdb)
@@ -248,8 +261,10 @@ class PDBTokenizer():
 
 
 def main():
-    with open(Path.joinpath(Path.cwd() / 'config/config.yaml'), 'r', encoding='utf-8') as configfile:
-            config = yaml.safe_load(configfile)
+    """Main"""
+    configpath = Path.joinpath(Path.cwd() / 'config/config.yaml')
+    with open(configpath, 'r', encoding='utf-8') as configfile:
+        config = yaml.safe_load(configfile)
 
     input_dir = Path.joinpath(Path.cwd() / config['input_dir'])
 
@@ -266,4 +281,4 @@ def main():
 
 
 if __name__ == '__main__':
-      sys.exit(main())
+    sys.exit(main())
