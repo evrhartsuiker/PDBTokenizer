@@ -7,6 +7,7 @@ from pathlib import Path
 from pdb_tokenizer import Cipher, PDBTokenizer
 
 def main():
+    """Main"""
     input_dir = Path.joinpath(Path.cwd() / 'data/input')
 
     cipher = Cipher()
@@ -22,4 +23,4 @@ def main():
 
 
 if __name__ == '__main__':
-      sys.exit(main())
+    sys.exit(main())
